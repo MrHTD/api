@@ -2,6 +2,8 @@
 
     include "db.php";
 
+    session_start();
+
     $email = $_POST['email'];
     $password = $_POST['password'];
 
@@ -10,10 +12,17 @@
     $result = mysqli_query($con, $sql);
 
     $count = mysqli_num_rows($result);
-    if ($count == 1) {
-        echo json_encode("Success");
+
+    $arr = [];
+
+    if ($count > 0) {
+        $arr["Success"] = "true";
+        $_SESSION["uemail"] = $email;
+        $arr["uemail"] = $_SESSION["uemail"];
     } else {
-        echo json_encode("Error");
+        $arr["Success"] = "false";
     }
+
+    print(json_encode($arr));
 
     ?>
